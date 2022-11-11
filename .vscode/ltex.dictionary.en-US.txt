@@ -1,0 +1,14 @@
+amdgpu
+amdgpu-tune
+bootloader
+dGPU
+ifdef
+ltex
+mV
+NONINFRINGEMENT
+oneshot
+ppfeaturemask
+RDNA
+systemd
+Undervolting
+UNLICENSE

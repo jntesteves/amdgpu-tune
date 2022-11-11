@@ -1,0 +1,2 @@
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qamdgpu-tune\\E$"}
+{"rule":"LC_AFTER_PERIOD","sentence":"^\\QEdit the environment variables in the amdgpu-tune.service file to tune the settings.\\E$"}

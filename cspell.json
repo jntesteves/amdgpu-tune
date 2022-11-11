@@ -1,0 +1,25 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "minWordLength": 4,
+  "dictionaries": [
+    "ltex.dictionary.en-US"
+  ],
+  "dictionaryDefinitions": [
+    {
+      "name": "ltex.dictionary.en-US",
+      "path": "./.vscode/ltex.dictionary.en-US.txt",
+      "addWords": true
+    }
+  ],
+  "enableFiletypes": [
+    "editorconfig",
+    "ignore",
+    "json",
+    "markdown",
+    "service",
+    "shellscript",
+    "text",
+    "toml"
+  ]
+}

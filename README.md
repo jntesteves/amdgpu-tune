@@ -10,33 +10,33 @@ You must append the boot parameter `amdgpu.ppfeaturemask=0xffffffff` to the kern
 
 ## Installation and usage
 
-Edit the environment variables in the [amdgpu-tune.service](amdgpu-tune.service) file to tune the settings. Then you can install the service to the `/etc/systemd/system` folder:
+Edit the environment variables in the [amdgpu-tune@.service](amdgpu-tune@.service) file to tune the settings. Then you can install the service to the `/etc/systemd/system` folder:
 
 ```shell
 # Install using make
 sudo make install
 
 # If you don't have make, you can use this command instead
-sudo install -DZ -m 644 -t /etc/systemd/system amdgpu-tune.service && sudo systemctl daemon-reload
+sudo install -DZ -m 644 -t /etc/systemd/system amdgpu-tune@{.service,apply.timer} && sudo systemctl daemon-reload
 ```
 
-Starting the service applies the configuration. Stopping the service resets the configuration back to defaults.
+Starting the service `amdgpu-tune@apply.service` applies the configuration. Starting the service `amdgpu-tune@reset.service` resets the configuration back to defaults.
 
 To start/stop the service:
 ```shell
-sudo systemctl start amdgpu-tune.service
+sudo systemctl start amdgpu-tune@apply.service
 
-sudo systemctl stop amdgpu-tune.service
+sudo systemctl start amdgpu-tune@reset.service
 ```
 
-You can keep tuning the configuration by just editing the file at `/etc/systemd/system/amdgpu-tune.service`. After making changes, you have to reload and restart the service to apply the new settings:
+You can keep tuning the configuration by just editing the file at `/etc/systemd/system/amdgpu-tune@.service`. After making changes, you have to reload and restart the service to apply the new settings:
 ```shell
-sudo systemctl daemon-reload && sudo systemctl restart amdgpu-tune.service
+sudo systemctl daemon-reload && sudo systemctl restart amdgpu-tune@apply.service
 ```
 
-After you have tuned the settings to your liking — and found a **stable** configuration! — you can optionally enable the service to have your settings always applied automatically on boot:
+After you have tuned the settings to your liking — and found a **stable** configuration! — you can optionally enable the systemd timer unit to have your settings always applied automatically on boot:
 ```shell
-sudo systemctl enable amdgpu-tune.service
+sudo systemctl enable amdgpu-tune@apply.timer
 ```
 
 ## Uninstall
@@ -45,7 +45,7 @@ sudo systemctl enable amdgpu-tune.service
 sudo make uninstall
 
 # If you don't have make, you can use this command instead
-sudo systemctl disable --now amdgpu-tune.service && sudo rm -f /etc/systemd/system/amdgpu-tune.service
+sudo systemctl disable --now amdgpu-tune@apply.timer && sudo rm -f /etc/systemd/system/amdgpu-tune@{.service,apply.timer}
 ```
 
 ## License

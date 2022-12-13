@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: Unlicense
+[Unit]
+Description=Automatically tune performance of AMD GPU
+After=default.target modprobe@amdgpu.service
+Wants=modprobe@amdgpu.service
+
+[Timer]
+OnClockChange=yes
+OnBootSec=2s
+
+[Install]
+WantedBy=default.target

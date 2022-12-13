@@ -58,7 +58,6 @@ Environment=VDDC_CURVE_2=
 
 Type=oneshot
 RemainAfterExit=yes
-ExecStartPre=sleep 2
 
 # We can just embed the whole script in the service unit to avoid dependency on another file.
 ExecStart=sh -c 'CARD=/sys/class/drm/card0; \
@@ -110,7 +109,8 @@ ExecStop=sh -c 'CARD=/sys/class/drm/card0; \
 
 [Unit]
 Description=Tune performance of AMD GPU
-After=default.target
+After=default.target modprobe@amdgpu.service
+Wants=modprobe@amdgpu.service
 
 [Install]
 WantedBy=default.target

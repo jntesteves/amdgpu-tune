@@ -6,7 +6,7 @@ Wants=modprobe@amdgpu.service
 
 [Timer]
 OnClockChange=yes
-OnBootSec=2s
+OnBootSec=12s
 
 [Install]
 WantedBy=default.target

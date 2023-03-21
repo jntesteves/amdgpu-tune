@@ -5,6 +5,7 @@ After=default.target modprobe@amdgpu.service
 Wants=modprobe@amdgpu.service
 
 [Timer]
+OnCalendar=06:00
 OnClockChange=yes
 OnBootSec=12s
 

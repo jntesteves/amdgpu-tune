@@ -60,52 +60,53 @@ Type=oneshot
 
 # We can just embed the whole script in the service unit to avoid dependency on another file.
 ExecStart=sh -c '                                                                                                    \n\
-    abort() { printf "%s\\n" "$*" >&2; exit 1; };                                                                    \n\
+    log_error() { printf "ERROR: %%s\\n" "$*" >&2; };                                                                \n\
+    abort() { log_error "$*"; exit 1; };                                                                             \n\
     CARD=/sys/class/drm/card0;                                                                                       \n\
-    for d in $(find /sys/class/drm/ -name card?); do                                                                 \n\
+    for d in /sys/class/drm/card?; do                                                                                \n\
         [ "${DEVICE}" ] && [ "0x${DEVICE}" = "$(cat $d/device/device)" ] &&                                          \n\
         CARD="$d" && printf "Selected device at $d\\n";                                                              \n\
     done;                                                                                                            \n\
     [ "%I" = "apply" ] && sleep 2;                                                                                   \n\
     if [ "%I" = "reset" ]; then                                                                                      \n\
         printf "Reverting changes: \\"r\\" >$CARD/device/pp_od_clk_voltage \\n" &&                                   \n\
-            printf "r\\n" >$CARD/device/pp_od_clk_voltage;                                                           \n\
+            printf "r\\n" >"$CARD"/device/pp_od_clk_voltage;                                                         \n\
         printf "Setting auto power management: \\"auto\\" >$CARD/device/power_dpm_force_performance_level \\n" &&    \n\
-            printf "auto\\n" >$CARD/device/power_dpm_force_performance_level;                                        \n\
+            printf "auto\\n" >"$CARD"/device/power_dpm_force_performance_level;                                      \n\
         exit 0;                                                                                                      \n\
     fi;                                                                                                              \n\
     printf "Setting manual power management: \\"manual\\" >$CARD/device/power_dpm_force_performance_level \\n" &&    \n\
-        printf "manual\\n" >$CARD/device/power_dpm_force_performance_level ||                                        \n\
-        abort "ERROR: Failed to set manual performance level";                                                       \n\
+        printf "manual\\n" >"$CARD"/device/power_dpm_force_performance_level ||                                      \n\
+        abort "Failed to set manual performance level";                                                              \n\
     [ "${CORE_CLOCK_MIN}" ] &&                                                                                       \n\
         printf "Setting minimum core clock: \\"s 0 ${CORE_CLOCK_MIN}\\" >$CARD/device/pp_od_clk_voltage\\n" &&       \n\
-        printf "s 0 ${CORE_CLOCK_MIN}\\n" >$CARD/device/pp_od_clk_voltage;                                           \n\
+        printf "s 0 ${CORE_CLOCK_MIN}\\n" >"$CARD"/device/pp_od_clk_voltage;                                         \n\
     [ "${CORE_CLOCK_MAX}" ] &&                                                                                       \n\
         printf "Setting maximum core clock: \\"s 1 ${CORE_CLOCK_MAX}\\" >$CARD/device/pp_od_clk_voltage\\n" &&       \n\
-        printf "s 1 ${CORE_CLOCK_MAX}\\n" >$CARD/device/pp_od_clk_voltage;                                           \n\
+        printf "s 1 ${CORE_CLOCK_MAX}\\n" >"$CARD"/device/pp_od_clk_voltage;                                         \n\
     [ "${MEMORY_CLOCK_MIN}" ] &&                                                                                     \n\
         printf "Setting minimum core clock: \\"m 0 ${MEMORY_CLOCK_MIN}\\" >$CARD/device/pp_od_clk_voltage\\n" &&     \n\
-        printf "m 0 ${MEMORY_CLOCK_MIN}\\n" >$CARD/device/pp_od_clk_voltage;                                         \n\
+        printf "m 0 ${MEMORY_CLOCK_MIN}\\n" >"$CARD"/device/pp_od_clk_voltage;                                       \n\
     [ "${MEMORY_CLOCK_MAX}" ] &&                                                                                     \n\
         printf "Setting maximum core clock: \\"m 1 ${MEMORY_CLOCK_MAX}\\" >$CARD/device/pp_od_clk_voltage\\n" &&     \n\
-        printf "m 1 ${MEMORY_CLOCK_MAX}\\n" >$CARD/device/pp_od_clk_voltage;                                         \n\
+        printf "m 1 ${MEMORY_CLOCK_MAX}\\n" >"$CARD"/device/pp_od_clk_voltage;                                       \n\
     [ "${VDDC_CURVE_0}" ] &&                                                                                         \n\
         printf "Setting frequency/voltage curve: \\"vc 0 ${VDDC_CURVE_0}\\" >$CARD/device/pp_od_clk_voltage\\n" &&   \n\
-        printf "vc 0 ${VDDC_CURVE_0}\\n" >$CARD/device/pp_od_clk_voltage;                                            \n\
+        printf "vc 0 ${VDDC_CURVE_0}\\n" >"$CARD"/device/pp_od_clk_voltage;                                          \n\
     [ "${VDDC_CURVE_1}" ] &&                                                                                         \n\
         printf "Setting frequency/voltage curve: \\"vc 1 ${VDDC_CURVE_1}\\" >$CARD/device/pp_od_clk_voltage\\n" &&   \n\
-        printf "vc 1 ${VDDC_CURVE_1}\\n" >$CARD/device/pp_od_clk_voltage;                                            \n\
+        printf "vc 1 ${VDDC_CURVE_1}\\n" >"$CARD"/device/pp_od_clk_voltage;                                          \n\
     [ "${VDDC_CURVE_2}" ] &&                                                                                         \n\
         printf "Setting frequency/voltage curve: \\"vc 2 ${VDDC_CURVE_2}\\" >$CARD/device/pp_od_clk_voltage\\n" &&   \n\
-        printf "vc 2 ${VDDC_CURVE_2}\\n" >$CARD/device/pp_od_clk_voltage;                                            \n\
+        printf "vc 2 ${VDDC_CURVE_2}\\n" >"$CARD"/device/pp_od_clk_voltage;                                          \n\
     [ "${VOLTAGE_OFFSET}" ] &&                                                                                       \n\
         printf "Setting voltage offset: \\"vo ${VOLTAGE_OFFSET}\\" >$CARD/device/pp_od_clk_voltage\\n" &&            \n\
-        printf "vo ${VOLTAGE_OFFSET}\\n" >$CARD/device/pp_od_clk_voltage;                                            \n\
+        printf "vo ${VOLTAGE_OFFSET}\\n" >"$CARD"/device/pp_od_clk_voltage;                                          \n\
     printf "Committing changes: \\"c\\" >$CARD/device/pp_od_clk_voltage \\n" &&                                      \n\
-        printf "c\\n" >$CARD/device/pp_od_clk_voltage ||                                                             \n\
-        abort "ERROR: Failed to commit changes";                                                                     \n\
+        printf "c\\n" >"$CARD"/device/pp_od_clk_voltage ||                                                           \n\
+        log_error "Failed to commit changes";                                                                        \n\
     printf "Setting auto power management: \\"auto\\" >$CARD/device/power_dpm_force_performance_level \\n" &&        \n\
-        printf "auto\\n" >$CARD/device/power_dpm_force_performance_level;                                            \n\
+        printf "auto\\n" >"$CARD"/device/power_dpm_force_performance_level;                                          \n\
 '
 
 [Unit]

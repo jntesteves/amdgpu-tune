@@ -50,6 +50,13 @@ Environment=VDDC_CURVE_0=
 Environment=VDDC_CURVE_1=
 Environment=VDDC_CURVE_2=
 
+# Set the power limit in Watts.
+# This setting is not supported on mobile GPUs.
+#
+# Example: POWER_CAP=130
+#
+Environment=POWER_CAP=
+
 
 
 ###############################################
@@ -66,6 +73,9 @@ ExecStart=sh -c '                                                               
     for d in /sys/class/drm/card?; do                                                                                \n\
         [ "${DEVICE}" ] && [ "0x${DEVICE}" = "$(cat $d/device/device)" ] &&                                          \n\
         CARD="$d" && printf "Selected device at $d\\n";                                                              \n\
+    done;                                                                                                            \n\
+    for d in "$CARD"/device/hwmon/hwmon?; do                                                                         \n\
+        HWMON="$d"; printf "Selected hwmon at $HWMON\\n"; break;                                                     \n\
     done;                                                                                                            \n\
     [ "%I" = "apply" ] && sleep 2;                                                                                   \n\
     if [ "%I" = "reset" ]; then                                                                                      \n\
@@ -105,6 +115,9 @@ ExecStart=sh -c '                                                               
     printf "Committing changes: \\"c\\" >$CARD/device/pp_od_clk_voltage \\n" &&                                      \n\
         printf "c\\n" >"$CARD"/device/pp_od_clk_voltage ||                                                           \n\
         log_error "Failed to commit changes";                                                                        \n\
+    [ "${POWER_CAP}" ] && [ "$HWMON" ] &&                                                                            \n\
+        printf "Setting power limit: \\"${POWER_CAP}000000\\" >$HWMON/power1_cap\\n" &&                              \n\
+        printf "${POWER_CAP}000000\\n" >"$HWMON"/power1_cap;                                                         \n\
     printf "Setting auto power management: \\"auto\\" >$CARD/device/power_dpm_force_performance_level \\n" &&        \n\
         printf "auto\\n" >"$CARD"/device/power_dpm_force_performance_level;                                          \n\
 '

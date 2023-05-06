@@ -90,13 +90,13 @@ ExecStart=sh -c '                                                               
         printf "Setting maximum core clock: \\"m 1 ${MEMORY_CLOCK_MAX}\\" >$CARD/device/pp_od_clk_voltage\\n" &&     \n\
         printf "m 1 ${MEMORY_CLOCK_MAX}\\n" >$CARD/device/pp_od_clk_voltage;                                         \n\
     [ "${VDDC_CURVE_0}" ] &&                                                                                         \n\
-        printf "Setting voltage offset: \\"vc 0 ${VDDC_CURVE_0}\\" >$CARD/device/pp_od_clk_voltage\\n" &&            \n\
+        printf "Setting frequency/voltage curve: \\"vc 0 ${VDDC_CURVE_0}\\" >$CARD/device/pp_od_clk_voltage\\n" &&   \n\
         printf "vc 0 ${VDDC_CURVE_0}\\n" >$CARD/device/pp_od_clk_voltage;                                            \n\
     [ "${VDDC_CURVE_1}" ] &&                                                                                         \n\
-        printf "Setting voltage offset: \\"vc 1 ${VDDC_CURVE_1}\\" >$CARD/device/pp_od_clk_voltage\\n" &&            \n\
+        printf "Setting frequency/voltage curve: \\"vc 1 ${VDDC_CURVE_1}\\" >$CARD/device/pp_od_clk_voltage\\n" &&   \n\
         printf "vc 1 ${VDDC_CURVE_1}\\n" >$CARD/device/pp_od_clk_voltage;                                            \n\
     [ "${VDDC_CURVE_2}" ] &&                                                                                         \n\
-        printf "Setting voltage offset: \\"vc 2 ${VDDC_CURVE_2}\\" >$CARD/device/pp_od_clk_voltage\\n" &&            \n\
+        printf "Setting frequency/voltage curve: \\"vc 2 ${VDDC_CURVE_2}\\" >$CARD/device/pp_od_clk_voltage\\n" &&   \n\
         printf "vc 2 ${VDDC_CURVE_2}\\n" >$CARD/device/pp_od_clk_voltage;                                            \n\
     [ "${VOLTAGE_OFFSET}" ] &&                                                                                       \n\
         printf "Setting voltage offset: \\"vo ${VOLTAGE_OFFSET}\\" >$CARD/device/pp_od_clk_voltage\\n" &&            \n\

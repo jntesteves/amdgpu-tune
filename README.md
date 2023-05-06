@@ -22,7 +22,7 @@ sudo install -DZ -m 644 -t /etc/systemd/system amdgpu-tune@{.service,apply.timer
 
 Starting the service `amdgpu-tune@apply.service` applies the configuration. Starting the service `amdgpu-tune@reset.service` resets the configuration back to defaults.
 
-To start/stop the service:
+To apply/reset the settings:
 ```shell
 sudo systemctl start amdgpu-tune@apply.service
 

@@ -1,7 +1,10 @@
+addprefix
 amdgpu
 amdgpu-tune
+Asus
 bootloader
 dGPU
+hwmon
 ifdef
 ltex
 mV
@@ -9,6 +12,8 @@ NONINFRINGEMENT
 oneshot
 ppfeaturemask
 RDNA
+ROG
+Strix
 systemd
 Undervolting
 UNLICENSE

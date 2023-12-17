@@ -13,19 +13,16 @@ You must append the boot parameter `amdgpu.ppfeaturemask=0xffffffff` to the kern
 Edit the environment variables in the [amdgpu-tune@.service](amdgpu-tune@.service) file to tune the settings. Then you can install the service to the `/etc/systemd/system` folder:
 
 ```shell
-# Install using make
-sudo make install
-
-# If you don't have make, you can use this command instead
-sudo install -DZ -m 644 -t /etc/systemd/system amdgpu-tune@{.service,apply.timer} && sudo systemctl daemon-reload
+sudo ./make install
 ```
 
 Starting the service `amdgpu-tune@apply.service` applies the configuration. Starting the service `amdgpu-tune@reset.service` resets the configuration back to defaults.
 
-To apply/reset the settings:
 ```shell
+# Apply configuration
 sudo systemctl start amdgpu-tune@apply.service
 
+# Reset configuration
 sudo systemctl start amdgpu-tune@reset.service
 ```
 
@@ -42,10 +39,11 @@ sudo systemctl enable amdgpu-tune@apply.timer
 ## Uninstall
 
 ```shell
-sudo make uninstall
+sudo ./make uninstall
 
-# If you don't have make, you can use this command instead
-sudo systemctl disable --now amdgpu-tune@apply.timer && sudo rm -f /etc/systemd/system/amdgpu-tune@{.service,apply.timer}
+# Or, without a clone of this repository, you can use these commands instead
+sudo systemctl disable --now amdgpu-tune@apply.timer
+sudo rm -f /etc/systemd/system/amdgpu-tune@{.service,apply.timer}
 ```
 
 ## License
